@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/H2-FruitStore.iml" filepath="$PROJECT_DIR$/H2-FruitStore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oa-android-H2-FruitStore.iml" filepath="$PROJECT_DIR$/oa-android-H2-FruitStore.iml" />
     </modules>
   </component>
 </project>

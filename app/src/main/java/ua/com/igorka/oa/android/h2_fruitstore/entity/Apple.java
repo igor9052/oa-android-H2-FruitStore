@@ -4,6 +4,10 @@ import android.os.Parcel;
 
 public class Apple extends Fruit {
 
+    public Apple(String name, int price) {
+        super(name, price);
+    }
+
     @Override
     public int describeContents() {
         return 0;

@@ -8,12 +8,23 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.FruitListActivity"
+            android:label="@string/title_activity_fruit_list"
+            android:exported="true" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name=".ACTION_NEW_LIST"/>
+                <action android:name=".ACTION_PRINT"/>
+                <action android:name=".ACTION_ADD"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
     </application>

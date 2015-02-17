@@ -72,4 +72,12 @@ public abstract class Fruit implements IFruit {
         result = 31 * result + price;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Fruit{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
