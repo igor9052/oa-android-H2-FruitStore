@@ -7,8 +7,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import ua.com.igorka.oa.android.h2_fruitstore.R;
+import ua.com.igorka.oa.android.h2_fruitstore.command.FruitListCommand;
+import ua.com.igorka.oa.android.h2_fruitstore.command.impl.FruitListActivityCommand.AddCommand;
+import ua.com.igorka.oa.android.h2_fruitstore.command.impl.FruitListActivityCommand.CreateNewListCommand;
+import ua.com.igorka.oa.android.h2_fruitstore.command.impl.FruitListActivityCommand.PrintCommand;
 import ua.com.igorka.oa.android.h2_fruitstore.entity.FruitFactory;
 import ua.com.igorka.oa.android.h2_fruitstore.entity.FruitList;
 import ua.com.igorka.oa.android.h2_fruitstore.entity.IFruit;
@@ -16,8 +24,11 @@ import ua.com.igorka.oa.android.h2_fruitstore.entity.IFruit;
 public class FruitListActivity extends ActionBarActivity {
 
     public static final String FRUIT_LIST = "FRUIT_LIST";
+    public static final String NOT_IMPLEMENTED = "Not implemented";
+    public static final int ADD_EXTRAS_REQUEST = 1001;
     private FruitList fruitList = null;
 
+    //ACTIONS
     public static final String ACTION_NEW_LIST = "ua.com.igorka.oa.android.h2_fruitstore.ACTION_NEW_LIST";
     public static final String ACTION_PRINT = "ua.com.igorka.oa.android.h2_fruitstore.ACTION_PRINT";
     public static final String ACTION_ADD = "ua.com.igorka.oa.android.h2_fruitstore.ACTION_ADD";
@@ -26,11 +37,19 @@ public class FruitListActivity extends ActionBarActivity {
     public static final String ACTION_DELETE_LAST = "ua.com.igorka.oa.android.h2_fruitstore.ACTION_DELETE_LAST";
     public static final String ACTION_DELETE = "ua.com.igorka.oa.android.h2_fruitstore.ACTION_DELETE";
 
-    //Extras
-    public static final String LIST_LENGTH = "LIST_LENGTH";
-    public static final String LIST_NAME = "LIST_NAME";
-    public static final String FRUIT_NAME = "FRUIT_NAME";
-    public static final String FRUIT_AMOUNT = "FRUIT_AMOUNT";
+    //EXTRAS
+    public static final String EXTRA_LIST_LENGTH = "EXTRA_LIST_LENGTH";
+    public static final String EXTRA_LIST_NAME = "EXTRA_LIST_NAME";
+    public static final String EXTRA_FRUIT_NAME = "EXTRA_FRUIT_NAME";
+    public static final String EXTRA_FRUIT_AMOUNT = "EXTRA_FRUIT_AMOUNT";
+
+    private static final Map<Integer, FruitListCommand> COMMAND_MAP = new HashMap<>();
+    static {
+        COMMAND_MAP.put(R.id.action_new_list, new CreateNewListCommand());
+        COMMAND_MAP.put(R.id.action_add, new AddCommand());
+        COMMAND_MAP.put(R.id.action_print, new PrintCommand());
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -54,7 +73,7 @@ public class FruitListActivity extends ActionBarActivity {
         fruitList = new FruitList();
         Intent intent = getIntent();
         if (ACTION_NEW_LIST.equals(intent.getAction())) {
-            fruitList = new FruitList(intent.getStringExtra(LIST_NAME), intent.getIntExtra(LIST_LENGTH, 0));
+            fruitList = new FruitList(intent.getStringExtra(EXTRA_LIST_NAME), intent.getIntExtra(EXTRA_LIST_LENGTH, 0));
         }
     }
 
@@ -88,11 +107,12 @@ public class FruitListActivity extends ActionBarActivity {
                 }
                 break;
             case ACTION_NEW_LIST:
-                fruitList = new FruitList(intent.getStringExtra(LIST_NAME), intent.getIntExtra(LIST_LENGTH, 0));
+                fruitList = new FruitList(intent.getStringExtra(EXTRA_LIST_NAME), intent.getIntExtra(EXTRA_LIST_LENGTH, 0));
                 break;
             case ACTION_ADD:
-                IFruit newFruit = FruitFactory.makeFruit(intent.getStringExtra(FRUIT_NAME));
-                fruitList.add(newFruit, intent.getIntExtra(FRUIT_AMOUNT, 1));
+                if (!hasActionAddExtras(intent)) break;
+                IFruit newFruit = FruitFactory.makeFruit(intent.getStringExtra(EXTRA_FRUIT_NAME));
+                fruitList.add(newFruit, intent.getIntExtra(EXTRA_FRUIT_AMOUNT, 1));
                 Log.i("LIST: ", fruitList.toString());
                 break;
             case ACTION_DELETE_LIST:
@@ -105,11 +125,21 @@ public class FruitListActivity extends ActionBarActivity {
                 fruitList.deleteLast();
                 break;
             case ACTION_DELETE:
-                IFruit delFruit = FruitFactory.makeFruit(intent.getStringExtra(FRUIT_NAME));
+                IFruit delFruit = FruitFactory.makeFruit(intent.getStringExtra(EXTRA_FRUIT_NAME));
                 fruitList.delete(delFruit);
                 break;
         }
         setIntent(new Intent().setAction("NONE"));
+    }
+
+    private boolean hasActionAddExtras(Intent intent) {
+        if (!intent.hasExtra(EXTRA_FRUIT_NAME)) {
+            return false;
+        }
+        if (!intent.hasExtra(EXTRA_FRUIT_AMOUNT)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -145,11 +175,23 @@ public class FruitListActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        FruitListCommand command = COMMAND_MAP.get(id);
+        if (command != null) {
+            command.execute(this);
             return true;
         }
-
+        switch (id) {
+            case R.id.action_delete_list:
+                break;
+            case R.id.action_delete_first:
+                break;
+            case R.id.action_delete_last:
+                break;
+            case R.id.action_delete:
+                break;
+        }
+        Toast.makeText(this, NOT_IMPLEMENTED, Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
+
 }

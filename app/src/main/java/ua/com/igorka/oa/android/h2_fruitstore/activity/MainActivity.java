@@ -1,5 +1,6 @@
  package ua.com.igorka.oa.android.h2_fruitstore.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,8 +33,14 @@ import ua.com.igorka.oa.android.h2_fruitstore.R;
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_new_list:
+                Intent intent = new Intent(this, FruitListActivity.class);
+                intent.setAction(FruitListActivity.ACTION_NEW_LIST);
+                intent.putExtra(FruitListActivity.EXTRA_LIST_NAME, "My fruit list");
+                intent.putExtra(FruitListActivity.EXTRA_LIST_LENGTH, 10);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -18,13 +18,15 @@
         </activity>
         <activity
             android:name=".activity.FruitListActivity"
+            android:exported="true"
             android:label="@string/title_activity_fruit_list"
-            android:exported="true" android:launchMode="singleTop">
+            android:launchMode="singleTop" >
             <intent-filter>
-                <action android:name=".ACTION_NEW_LIST"/>
-                <action android:name=".ACTION_PRINT"/>
-                <action android:name=".ACTION_ADD"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name=".ACTION_NEW_LIST" />
+                <action android:name=".ACTION_PRINT" />
+                <action android:name=".ACTION_ADD" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

@@ -2,6 +2,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ua.com.igorka.oa.android.h2_fruitstore.activity.FruitListActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+
+    <item android:id="@+id/action_new_list" android:title="@string/action_new_list"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_add" android:title="@string/action_add"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_delete_list" android:title="@string/action_delete_list"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_delete_first" android:title="@string/action_delete_first"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_delete_last" android:title="@string/action_delete_last"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_delete" android:title="@string/action_delete"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_print" android:title="@string/action_print"
+        android:orderInCategory="100" app:showAsAction="never" />
+
 </menu>
